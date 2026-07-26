@@ -21,11 +21,17 @@ public class CurseDefinitionDangerTests
     }
 
     [Fact]
-    public void WarnYellowWhenOff_and_BlocksLeaderboard_default_false()
+    public void WarnYellowWhenOff_defaults_false()
     {
         var def = new CurseDefinition("x", "X");
         Assert.False(def.WarnYellowWhenOff);
-        Assert.False(def.BlocksLeaderboard);
+    }
+
+    [Fact]
+    public void BlocksLeaderboard_defaults_true()
+    {
+        var def = new CurseDefinition("x", "X");
+        Assert.True(def.BlocksLeaderboard);
     }
 
     [Fact]
@@ -35,9 +41,9 @@ public class CurseDefinitionDangerTests
             "edge",
             "Edge Rocker",
             warnYellowWhenOff: true,
-            blocksLeaderboard: true);
+            blocksLeaderboard: false);
         Assert.True(def.WarnYellowWhenOff);
-        Assert.True(def.BlocksLeaderboard);
+        Assert.False(def.BlocksLeaderboard);
         Assert.False(def.DangerWhenOff);
     }
 }

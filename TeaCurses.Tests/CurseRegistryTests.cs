@@ -106,19 +106,18 @@ public class CurseRegistryTests : IDisposable
     }
 
     [Fact]
-    public void AnyEnabledBlocksLeaderboard_true_when_blocking_curse_on()
+    public void AnyEnabledBlocksLeaderboard_true_when_any_enabled_curse_on()
     {
-        CurseRegistry.Register(new CurseDefinition(
-            "edge", "Edge", blocksLeaderboard: true));
         CurseRegistry.Register(new CurseDefinition("plain", "Plain"));
-        CurseRegistry.SetEnabled("edge", true);
+        CurseRegistry.SetEnabled("plain", true);
         Assert.True(CurseRegistry.AnyEnabledBlocksLeaderboard());
     }
 
     [Fact]
     public void AnyEnabledBlocksLeaderboard_ignores_enabled_non_blocking()
     {
-        CurseRegistry.Register(new CurseDefinition("plain", "Plain"));
+        CurseRegistry.Register(new CurseDefinition(
+            "plain", "Plain", blocksLeaderboard: false));
         CurseRegistry.SetEnabled("plain", true);
         Assert.False(CurseRegistry.AnyEnabledBlocksLeaderboard());
     }

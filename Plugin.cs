@@ -113,8 +113,7 @@ public class Plugin : RiftPlugin
         CurseRegistry.Register(new CurseDefinition(
             EdgeRocker.Name,
             "Edge Rocker",
-            warnYellowWhenOff: true,
-            blocksLeaderboard: true));
+            warnYellowWhenOff: true));
         CurseRegistry.Register(new CurseDefinition(
             ImperfectRifts.Name,
             "Imperfect Rifts",

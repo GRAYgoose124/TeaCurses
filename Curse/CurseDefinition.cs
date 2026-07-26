@@ -65,7 +65,7 @@ public sealed class CurseDefinition
         CurseIntensity intensity = null,
         bool dangerWhenOff = false,
         bool warnYellowWhenOff = false,
-        bool blocksLeaderboard = false)
+        bool blocksLeaderboard = true)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
         DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
