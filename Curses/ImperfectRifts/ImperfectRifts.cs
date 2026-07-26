@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using HarmonyLib;
 using RhythmRift;
 using Shared;
@@ -88,23 +87,11 @@ public static class ImperfectRifts
     /// Pause / quick / results retry often goes through <see cref="StageController{T}.RetryStage"/>
     /// without a fresh BeginPlay on the same stage instance.
     /// </summary>
-    [HarmonyPatch]
-    private static class RetryStagePatch
+    [HarmonyPatch(typeof(StageController<RRBeatmapPlayer>), nameof(StageController<RRBeatmapPlayer>.RetryStage))]
+    [HarmonyPostfix]
+    private static void RetryStagePostfix()
     {
-        private static MethodBase TargetMethod()
-        {
-            var closed = typeof(StageController<>).MakeGenericType(typeof(RRBeatmapPlayer));
-            return AccessTools.Method(
-                closed,
-                "RetryStage",
-                new[] { typeof(bool), typeof(bool), typeof(bool) });
-        }
-
-        [HarmonyPostfix]
-        private static void Postfix()
-        {
-            ResetChaosForNewAttempt();
-        }
+        ResetChaosForNewAttempt();
     }
 
     [HarmonyPatch(typeof(RRStageController), nameof(RRStageController.ProcessHitData))]
