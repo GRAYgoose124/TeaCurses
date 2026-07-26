@@ -133,6 +133,9 @@ public class Plugin : RiftPlugin
                 Harmony.PatchAll(nested);
         }
 
+        // Glyph sprites once per game load — chart BeginPlay only reshuffles the map.
+        Cryptid.WarmupAtGameLoad();
+
         Logger.LogInfo($"{MyPluginInfo.PLUGIN_GUID} ready — press {ToggleKey.Entry.Value} (or Plus) for curses");
         _initialized = true;
         base.OnInit();

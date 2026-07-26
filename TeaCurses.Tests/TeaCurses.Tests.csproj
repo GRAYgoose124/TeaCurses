@@ -53,6 +53,7 @@
     <Compile Include="..\Curses\Cryptid\CryptidMap.cs" Link="CryptidMap.cs" />
     <Compile Include="..\Curses\Cryptid\CryptidGlyphPool.cs" Link="CryptidGlyphPool.cs" />
     <Compile Include="..\Curses\Cryptid\CryptidGlyphModeRules.cs" Link="CryptidGlyphModeRules.cs" />
+    <Compile Include="..\Curses\Cryptid\CryptidBakeLifecycle.cs" Link="CryptidBakeLifecycle.cs" />
     <Compile Include="..\Curses\Cryptid\CryptidGlyphNormalize.cs" Link="CryptidGlyphNormalize.cs" />
     <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysMode.cs" Link="AlltheWaysMode.cs" />
     <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysDiagonalLayout.cs" Link="AlltheWaysDiagonalLayout.cs" />

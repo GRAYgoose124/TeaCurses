@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using HarmonyLib;
 using RhythmRift;
@@ -13,6 +14,7 @@ namespace TeaCurses;
 /// <summary>
 /// Replaces field enemy art with shuffled Unicode/procedural glyphs.
 /// Debut types keep real art with a superscript glyph tell; later instances are glyph-only.
+/// Glyph sprites bake once per game load; chart start only reshuffles the type map.
 /// </summary>
 [HarmonyPatch]
 public static class Cryptid
@@ -30,7 +32,10 @@ public static class Cryptid
     private static AccessTools.FieldRef<RREnemy, SpriteRenderer> MonsterShadow;
     private static Material SpritesDefault;
     private static bool ChartReady;
+    private static bool SessionBaked;
     private static CryptidGlyphMode ActiveMode = CryptidGlyphMode.Mix;
+    private static CryptidGlyphMode SessionMode = CryptidGlyphMode.Mix;
+    private static List<int> SessionPool = new List<int>();
 
     static Cryptid()
     {
@@ -81,10 +86,26 @@ public static class Cryptid
         }
     }
 
-    public static void BeginChart()
+    /// <summary>
+    /// Bake glyph sprites once at game/plugin load. Safe to call again; no-ops when warm.
+    /// </summary>
+    public static void WarmupAtGameLoad()
     {
-        CryptidGlyphBake.Clear();
-        ActiveMode = ReadMode();
+        EnsureSessionBake(ReadMode());
+    }
+
+    private static void EnsureSessionBake(CryptidGlyphMode requested)
+    {
+        if (!CryptidBakeLifecycle.NeedsBake(SessionBaked, SessionMode, requested))
+        {
+            ActiveMode = SessionMode;
+            return;
+        }
+
+        if (SessionBaked)
+            CryptidGlyphBake.Clear();
+
+        ActiveMode = requested;
         var baked = CryptidGlyphBake.BakeSuccessful(CryptidGlyphPool.Default, ActiveMode);
         if (baked.Count == 0 && ActiveMode == CryptidGlyphMode.UnicodeOnly)
         {
@@ -93,17 +114,25 @@ public static class Cryptid
             baked = CryptidGlyphBake.BakeSuccessful(CryptidGlyphPool.Default, ActiveMode);
         }
 
-        if (baked.Count == 0)
-        {
-            Plugin.Logger?.LogWarning("Cryptid: glyph bake produced empty pool");
-            Map.BeginChart(Environment.TickCount, CryptidGlyphPool.Default);
-            ChartReady = true;
-            return;
-        }
+        SessionPool = baked.Count > 0 ? baked : new List<int>(CryptidGlyphPool.Default);
+        SessionMode = ActiveMode;
+        SessionBaked = true;
 
-        Map.BeginChart(Environment.TickCount, baked);
+        if (baked.Count == 0)
+            Plugin.Logger?.LogWarning("Cryptid: glyph bake produced empty pool; using codepoint ids only");
+        else
+            Plugin.Logger?.LogInfo($"Cryptid: session glyphs ready ({baked.Count}, mode={ActiveMode})");
+    }
+
+    /// <summary>
+    /// Per-chart reshuffle of type→glyph assignments. Does not re-bake sprites.
+    /// </summary>
+    public static void BeginChart()
+    {
+        EnsureSessionBake(ReadMode());
+        var pool = SessionPool.Count > 0 ? (IReadOnlyList<int>)SessionPool : CryptidGlyphPool.Default;
+        Map.BeginChart(Environment.TickCount, pool);
         ChartReady = true;
-        Plugin.Logger?.LogInfo($"Cryptid: chart map ready ({baked.Count} glyphs, mode={ActiveMode})");
     }
 
     private static void EnsureChart()
