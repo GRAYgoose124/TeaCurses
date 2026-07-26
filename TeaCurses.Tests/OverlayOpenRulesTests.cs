@@ -40,4 +40,12 @@ public class OverlayOpenRulesTests
         Assert.False(OverlayOpenRules.ShouldCloseFromCancel(currentlyOpen: true, cancelPressed: false));
         Assert.False(OverlayOpenRules.ShouldCloseFromCancel(currentlyOpen: false, cancelPressed: false));
     }
+
+    [Fact]
+    public void Suppress_stock_cancel_only_on_the_close_frame()
+    {
+        Assert.True(OverlayOpenRules.ShouldSuppressStockCancel(suppressFrame: 10, currentFrame: 10));
+        Assert.False(OverlayOpenRules.ShouldSuppressStockCancel(suppressFrame: 10, currentFrame: 11));
+        Assert.False(OverlayOpenRules.ShouldSuppressStockCancel(suppressFrame: -1, currentFrame: 10));
+    }
 }

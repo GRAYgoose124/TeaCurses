@@ -8,18 +8,21 @@ namespace TeaCurses.Patches;
 [HarmonyPatch]
 public static class MenuInputBlockPatches
 {
+    private static bool ShouldHoldStockMenus
+        => MenuInputGuard.IsBlocking || MenuInputGuard.ShouldSuppressStockCancel;
+
     [HarmonyPatch(typeof(OptionsScreenInputController), nameof(OptionsScreenInputController.Update))]
     [HarmonyPrefix]
     public static bool OptionsUpdatePrefix()
     {
-        return !MenuInputGuard.IsBlocking;
+        return !ShouldHoldStockMenus;
     }
 
     [HarmonyPatch(typeof(CustomTracksSelectionSceneController), nameof(CustomTracksSelectionSceneController.Update))]
     [HarmonyPrefix]
     public static bool CustomTracksUpdatePrefix(CustomTracksSelectionSceneController __instance)
     {
-        if (!MenuInputGuard.IsBlocking)
+        if (!ShouldHoldStockMenus)
             return true;
 
         // Keep background track-query work; only skip the input section by
@@ -33,7 +36,7 @@ public static class MenuInputBlockPatches
     [HarmonyPrefix]
     public static bool StockTracksUpdatePrefix(TrackSelectionSceneController __instance)
     {
-        if (!MenuInputGuard.IsBlocking)
+        if (!ShouldHoldStockMenus)
             return true;
 
         if (!__instance.InputDisabled)

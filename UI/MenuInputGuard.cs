@@ -12,12 +12,24 @@ namespace TeaCurses.UI;
 public static class MenuInputGuard
 {
     private static bool _blocking;
+    private static int _suppressStockCancelFrame = -1;
     private static bool? _savedCustomInputDisabled;
     private static bool? _savedStockInputDisabled;
     private static readonly List<(OptionsScreenInputController Controller, bool WasDisabled)> SavedOptions =
         new List<(OptionsScreenInputController, bool)>();
 
     public static bool IsBlocking => _blocking;
+
+    /// <summary>
+    /// True on the frame cancel closed the overlay — stock menus must not see Cancel.
+    /// </summary>
+    public static bool ShouldSuppressStockCancel
+        => OverlayOpenRules.ShouldSuppressStockCancel(_suppressStockCancelFrame, Time.frameCount);
+
+    public static void SuppressStockCancelThisFrame()
+    {
+        _suppressStockCancelFrame = Time.frameCount;
+    }
 
     public static void SetBlocking(bool block)
     {

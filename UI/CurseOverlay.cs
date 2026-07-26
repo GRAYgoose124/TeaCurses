@@ -95,6 +95,8 @@ public sealed class CurseOverlay : MonoBehaviour
         var cancelPressed = input.GetKeyDown(KeyCode.Escape) || WasUiCancelPerformedThisFrame();
         if (OverlayOpenRules.ShouldCloseFromCancel(_isOpen, cancelPressed))
         {
+            // Eat Cancel for the rest of this frame so stock track select does not also back out.
+            MenuInputGuard.SuppressStockCancelThisFrame();
             SetOpen(false);
             return;
         }

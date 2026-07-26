@@ -29,4 +29,11 @@ public static class OverlayOpenRules
     /// </summary>
     public static bool ShouldCloseFromCancel(bool currentlyOpen, bool cancelPressed)
         => currentlyOpen && cancelPressed;
+
+    /// <summary>
+    /// After cancel closes the overlay, stock track/options Update must ignore
+    /// Cancel for the remainder of that frame so Esc does not also leave track select.
+    /// </summary>
+    public static bool ShouldSuppressStockCancel(int suppressFrame, int currentFrame)
+        => suppressFrame >= 0 && suppressFrame == currentFrame;
 }
