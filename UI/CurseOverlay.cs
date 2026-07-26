@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using BepInEx;
+using Shared.RiftInput;
 using TeaCurses.Curse;
 using TeaCurses.Curses;
 using TMPro;
@@ -91,6 +92,13 @@ public sealed class CurseOverlay : MonoBehaviour
         if (!_isOpen || input == null)
             return;
 
+        var cancelPressed = input.GetKeyDown(KeyCode.Escape) || WasUiCancelPerformedThisFrame();
+        if (OverlayOpenRules.ShouldCloseFromCancel(_isOpen, cancelPressed))
+        {
+            SetOpen(false);
+            return;
+        }
+
         var count = CurseRegistry.All.Count;
 
         if (input.GetKeyDown(KeyCode.UpArrow) || input.GetKeyDown(KeyCode.W))
@@ -150,6 +158,19 @@ public sealed class CurseOverlay : MonoBehaviour
         }
     }
 
+    private static bool WasUiCancelPerformedThisFrame()
+    {
+        try
+        {
+            var cancel = InputAccessor.Instance?.RiftInput?.UI.Cancel;
+            return cancel != null && cancel.WasPerformedThisFrame();
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     private void Update()
     {
         if (!_isOpen)
@@ -193,7 +214,7 @@ public sealed class CurseOverlay : MonoBehaviour
             return;
         }
 
-        SetHint("[=] close  [Up/Down] move  [PgUp/PgDn] page  [Home/End]  [Enter] toggle  [Left/Right] intensity");
+        SetHint("[=]/Cancel] close  [Up/Down] move  [PgUp/PgDn] page  [Home/End]  [Enter] toggle  [Left/Right] intensity");
 
         for (var row = 0; row < VisibleRows; row++)
         {

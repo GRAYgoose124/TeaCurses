@@ -26,4 +26,18 @@ public class OverlayOpenRulesTests
         Assert.False(OverlayOpenRules.ShouldForceClose(currentlyOpen: true, inTrackMenu: true));
         Assert.False(OverlayOpenRules.ShouldForceClose(currentlyOpen: false, inTrackMenu: false));
     }
+
+    [Fact]
+    public void Cancel_closes_when_open()
+    {
+        Assert.True(OverlayOpenRules.ShouldCloseFromCancel(currentlyOpen: true, cancelPressed: true));
+    }
+
+    [Fact]
+    public void Cancel_ignored_when_closed_or_not_pressed()
+    {
+        Assert.False(OverlayOpenRules.ShouldCloseFromCancel(currentlyOpen: false, cancelPressed: true));
+        Assert.False(OverlayOpenRules.ShouldCloseFromCancel(currentlyOpen: true, cancelPressed: false));
+        Assert.False(OverlayOpenRules.ShouldCloseFromCancel(currentlyOpen: false, cancelPressed: false));
+    }
 }

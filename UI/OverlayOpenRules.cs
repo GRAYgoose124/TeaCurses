@@ -23,4 +23,10 @@ public static class OverlayOpenRules
     /// </summary>
     public static bool ShouldForceClose(bool currentlyOpen, bool inTrackMenu)
         => currentlyOpen && !inTrackMenu;
+
+    /// <summary>
+    /// UI Cancel / Escape while open → close.
+    /// </summary>
+    public static bool ShouldCloseFromCancel(bool currentlyOpen, bool cancelPressed)
+        => currentlyOpen && cancelPressed;
 }
