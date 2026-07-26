@@ -1,0 +1,1 @@
+- Move character portraiss for *ways Curses. (Or BepInEx cfg option to toggle hiding them on *ways Curses.)
