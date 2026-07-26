@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>TeaCurses.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Curse\CurseDefinition.cs" Link="CurseDefinition.cs" />
+    <Compile Include="..\Curse\CurseRegistry.cs" Link="CurseRegistry.cs" />
+    <Compile Include="..\UI\OverlayNav.cs" Link="OverlayNav.cs" />
+    <Compile Include="..\UI\OverlayOpenRules.cs" Link="OverlayOpenRules.cs" />
+    <Compile Include="..\UI\AlbumArtPicker.cs" Link="AlbumArtPicker.cs" />
+    <Compile Include="..\UI\AlbumArtResolver.cs" Link="AlbumArtResolver.cs" />
+    <Compile Include="..\UI\AlbumArtOptionRules.cs" Link="AlbumArtOptionRules.cs" />
+    <Compile Include="..\UI\TitleRgbCycle.cs" Link="TitleRgbCycle.cs" />
+    <Compile Include="..\UI\FontAssetPicker.cs" Link="FontAssetPicker.cs" />
+    <Compile Include="..\UI\HexPlateMath.cs" Link="HexPlateMath.cs" />
+    <Compile Include="..\UI\HexPlateLayout.cs" Link="HexPlateLayout.cs" />
+    <Compile Include="..\Curses\Shared\BindSide.cs" Link="BindSide.cs" />
+    <Compile Include="..\Curses\Afterimage\AfterimageBeatTint.cs" Link="AfterimageBeatTint.cs" />
+    <Compile Include="..\Curses\Afterimage\AfterimageLedger.cs" Link="AfterimageLedger.cs" />
+    <Compile Include="..\Curses\Afterimage\AfterimageTrail.cs" Link="AfterimageTrail.cs" />
+    <Compile Include="..\Curses\Blink\BlinkSchedule.cs" Link="BlinkSchedule.cs" />
+    <Compile Include="..\Curses\Shared\CurseHandExclusivity.cs" Link="CurseHandExclusivity.cs" />
+    <Compile Include="..\Curses\OneHand\OneHandRules.cs" Link="OneHandRules.cs" />
+    <Compile Include="..\Curses\MirrorControls\MirrorControlsMap.cs" Link="MirrorControlsMap.cs" />
+    <Compile Include="..\Curses\SmoothBeats\SmoothBeatsBlend.cs" Link="SmoothBeatsBlend.cs" />
+    <Compile Include="..\Curses\UpwardsRift\UpwardsRiftLayout.cs" Link="UpwardsRiftLayout.cs" />
+    <Compile Include="..\Curses\SidewaysRift\SidewaysRiftSide.cs" Link="SidewaysRiftSide.cs" />
+    <Compile Include="..\Curses\SidewaysRift\SidewaysRiftLayout.cs" Link="SidewaysRiftLayout.cs" />
+    <Compile Include="..\Curses\SidewaysRift\SidewaysRiftPortraitLayout.cs" Link="SidewaysRiftPortraitLayout.cs" />
+    <Compile Include="..\Curses\VanishingPoint\VanishingPointFade.cs" Link="VanishingPointFade.cs" />
+    <Compile Include="..\Curses\Armored\ArmoredRules.cs" Link="ArmoredRules.cs" />
+    <Compile Include="..\Curses\Armored\ArmoredFlash.cs" Link="ArmoredFlash.cs" />
+    <Compile Include="..\Curses\Trappist\TrappistRules.cs" Link="TrappistRules.cs" />
+    <Compile Include="..\Curses\Trappist\TrappistLedger.cs" Link="TrappistLedger.cs" />
+    <Compile Include="..\Curses\HalfWindow\HalfWindowRules.cs" Link="HalfWindowRules.cs" />
+    <Compile Include="..\Curses\Shared\CurseRowColor.cs" Link="CurseRowColor.cs" />
+    <Compile Include="..\Curses\Cryptid\CryptidMorph.cs" Link="CryptidMorph.cs" />
+    <Compile Include="..\Curses\Cryptid\CryptidMap.cs" Link="CryptidMap.cs" />
+    <Compile Include="..\Curses\Cryptid\CryptidGlyphPool.cs" Link="CryptidGlyphPool.cs" />
+    <Compile Include="..\Curses\Cryptid\CryptidGlyphModeRules.cs" Link="CryptidGlyphModeRules.cs" />
+    <Compile Include="..\Curses\Cryptid\CryptidGlyphNormalize.cs" Link="CryptidGlyphNormalize.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysMode.cs" Link="AlltheWaysMode.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysDiagonalLayout.cs" Link="AlltheWaysDiagonalLayout.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysSpiralLayout.cs" Link="AlltheWaysSpiralLayout.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysSidewaysLayout.cs" Link="AlltheWaysSidewaysLayout.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysFunnelLayout.cs" Link="AlltheWaysFunnelLayout.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysSerpentineLayout.cs" Link="AlltheWaysSerpentineLayout.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysSwitchbackLayout.cs" Link="AlltheWaysSwitchbackLayout.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysCrossroadsLayout.cs" Link="AlltheWaysCrossroadsLayout.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysOrbitLayout.cs" Link="AlltheWaysOrbitLayout.cs" />
+    <Compile Include="..\Curses\AlltheWaysRift\AlltheWaysTripleArmOutLayout.cs" Link="AlltheWaysTripleArmOutLayout.cs" />
+    <Compile Include="..\Curses\EdgeRocker\EdgeRockerRules.cs" Link="EdgeRockerRules.cs" />
+    <Compile Include="..\Curses\ImperfectRifts\ImperfectRiftsRules.cs" Link="ImperfectRiftsRules.cs" />
+  </ItemGroup>
+
+</Project>
