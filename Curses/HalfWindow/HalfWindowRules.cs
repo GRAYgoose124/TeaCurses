@@ -10,15 +10,21 @@ public enum HalfWindowTiming
 }
 
 /// <summary>
-/// Half Window: intensity 0 suppresses late, 1 suppresses early;
+/// Half Window: intensity 0 = no late, 1 = no early, 2 = no both;
 /// safe rating avoids divide-by-zero when a side's window is zero.
 /// </summary>
 public static class HalfWindowRules
 {
+    public const float MinIntensity = 0f;
+    public const float MaxIntensity = 2f;
+    public const float DefaultIntensity = 0f;
+
     private const float OnBeatEpsilon = 1e-6f;
 
-    public static bool SuppressLate(float intensity) => intensity < 1f;
+    /// <summary>0 = early-only; 2 = both off (also suppress late).</summary>
+    public static bool SuppressLate(float intensity) => intensity < 1f || intensity >= 2f;
 
+    /// <summary>1 = late-only; 2 = both off.</summary>
     public static bool SuppressEarly(float intensity) => intensity >= 1f;
 
     public static float EffectiveWindow(float stock, bool suppress)
@@ -32,6 +38,19 @@ public static class HalfWindowRules
         if (beatDiff >= 0f)
             return beatDiff <= afterBeats;
         return beatDiff >= -beforeBeats;
+    }
+
+    /// <summary>
+    /// Player input window under Half Window. On-beat always accepted so intensity 2
+    /// (both halves zero) remains true-flawless-only rather than impossible.
+    /// </summary>
+    public static bool IsWithinPlayerInputWindow(float diffSeconds, float before, float after)
+    {
+        if (Math.Abs(diffSeconds) <= OnBeatEpsilon)
+            return true;
+        if (diffSeconds < 0f)
+            return Math.Abs(diffSeconds) < before;
+        return diffSeconds < after;
     }
 
     public static void EffectivePair(

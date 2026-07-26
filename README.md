@@ -31,7 +31,7 @@ Intensity shows under the list when the highlighted curse has a range. Some curs
 - **Vanishing Point** (intensity 1–10) — enemies fade as they near the action row. 
 - **Armored** — stock 1-HP monsters take two hits (already multi-hit and health items unchanged). Missing hurt clips get a short white flash / scale punch.
 - Unfun **Trappist** (intensity 1–10) — remixes chart traps.
-- **Half Window** (intensity toggle 0/1) — 0 = no late (early-only); 1 = no early (late-only).
+- **Half Window** (intensity 0–2) — 0 = no late (early-only); 1 = no early (late-only); 2 = both off (true-flawless only).
 - **Cryptid** (unfair — red when off; intensity **1–3**) — field enemies become shuffled Runic/Cuneiform glyphs each chart. **1** = found Unicode only; **2** = procedural only; **3** = mix. First sighting of a type keeps real art with a superscript glyph tell above the head (learn it on the walk in); later instances are glyph-only.
 - **Edge Rocker** (blocks leaderboard) — input **releases** also count as hit attempts.
 - **Imperfect Rifts** (intensity 1–10) — non-Perfect hits raise a chaos meter that drifts/shakes field tiles; Perfects repair.

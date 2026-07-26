@@ -9,7 +9,8 @@ public class HalfWindowRulesTests
     [InlineData(0f, true, false)]
     [InlineData(0.5f, true, false)]
     [InlineData(1f, false, true)]
-    [InlineData(2f, false, true)]
+    [InlineData(1.5f, false, true)]
+    [InlineData(2f, true, true)]
     public void Intensity_maps_suppress_flags(float intensity, bool suppressLate, bool suppressEarly)
     {
         Assert.Equal(suppressLate, HalfWindowRules.SuppressLate(intensity));
@@ -84,5 +85,31 @@ public class HalfWindowRulesTests
             out var before, out var after);
         Assert.Equal(0f, before);
         Assert.Equal(0.25f, after);
+    }
+
+    [Fact]
+    public void Effective_pair_zeros_both_for_intensity_2()
+    {
+        HalfWindowRules.EffectivePair(
+            stockBefore: 0.25f, stockAfter: 0.25f, intensity: 2f,
+            out var before, out var after);
+        Assert.Equal(0f, before);
+        Assert.Equal(0f, after);
+    }
+
+    [Theory]
+    [InlineData(0f, 0f, 0f, true)]       // both off: on-beat still in
+    [InlineData(0.001f, 0f, 0f, false)]  // both off: late out
+    [InlineData(-0.001f, 0f, 0f, false)] // both off: early out
+    [InlineData(-0.05f, 0.1f, 0f, true)] // early-only
+    [InlineData(0.05f, 0.1f, 0f, false)]
+    [InlineData(0.05f, 0f, 0.1f, true)]  // late-only
+    [InlineData(-0.05f, 0f, 0.1f, false)]
+    public void Player_input_window_respects_effective_halves(
+        float diffSeconds, float before, float after, bool accepted)
+    {
+        Assert.Equal(
+            accepted,
+            HalfWindowRules.IsWithinPlayerInputWindow(diffSeconds, before, after));
     }
 }

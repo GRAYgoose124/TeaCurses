@@ -100,7 +100,11 @@ public class Plugin : RiftPlugin
         CurseRegistry.Register(new CurseDefinition(
             HalfWindow.Name,
             "Half Window",
-            new CurseIntensity(0f, 1f, 1f, 0f)));
+            new CurseIntensity(
+                HalfWindowRules.MinIntensity,
+                HalfWindowRules.MaxIntensity,
+                1f,
+                HalfWindowRules.DefaultIntensity)));
         CurseRegistry.Register(new CurseDefinition(
             Cryptid.Name,
             "Cryptid",

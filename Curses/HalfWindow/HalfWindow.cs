@@ -3,13 +3,12 @@ using RhythmRift;
 using Shared;
 using Shared.RhythmEngine;
 using TeaCurses.Curse;
-using UnityEngine;
 
 namespace TeaCurses;
 
 /// <summary>
-/// Zeros half of the stock hit window. Intensity 0 = no late (early-only);
-/// intensity 1 = no early (late-only). Removed-half presses mistime stock-style.
+/// Zeros stock hit-window halves. Intensity 0 = no late (early-only);
+/// 1 = no early (late-only); 2 = both off (true-flawless-only).
 /// Enemy hits write the public backing fields; BeatmapPlayer reads that pair.
 /// </summary>
 [HarmonyPatch]
@@ -89,11 +88,8 @@ public static class HalfWindow
             out var before,
             out var after);
 
-        // Stock: early uses Abs(diff) < before; late uses diff < after.
-        if (inputDifferenceInSeconds < 0f)
-            __result = Mathf.Abs(inputDifferenceInSeconds) < before;
-        else
-            __result = inputDifferenceInSeconds < after;
+        __result = HalfWindowRules.IsWithinPlayerInputWindow(
+            inputDifferenceInSeconds, before, after);
         return false;
     }
 
