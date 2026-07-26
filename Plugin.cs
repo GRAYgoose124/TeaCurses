@@ -1,8 +1,6 @@
 using System;
-using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
-using HarmonyLib;
 using RiftOfTheNecroManager;
 using TeaCurses.Curse;
 using TeaCurses.Curses;
@@ -22,27 +20,6 @@ public class Plugin : RiftPlugin
         "ToggleKey",
         KeyCode.Equals,
         "Key that opens/closes the TeaCurses curse overlay.");
-
-    private static readonly Type[] PatchTypes =
-    {
-        typeof(AlternatingHands),
-        typeof(MirrorControls),
-        typeof(OneHand),
-        typeof(Blink),
-        typeof(Afterimage),
-        typeof(SmoothBeats),
-        typeof(UpwardsRift),
-        typeof(SidewaysRift),
-        typeof(AlltheWaysRift),
-        typeof(VanishingPoint),
-        typeof(Armored),
-        typeof(Trappist),
-        typeof(HalfWindow),
-        typeof(Cryptid),
-        typeof(EdgeRocker),
-        typeof(ImperfectRifts),
-        typeof(Patches.MenuInputBlockPatches),
-    };
 
     private CurseOverlay _overlay;
     private bool _initialized;
@@ -127,16 +104,8 @@ public class Plugin : RiftPlugin
                 1f,
                 ImperfectRiftsRules.DefaultIntensity)));
 
-        Harmony.UnpatchSelf();
-        foreach (var type in PatchTypes)
-            Harmony.PatchAll(type);
-        foreach (var nested in typeof(ImperfectRifts).GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public))
-        {
-            if (nested.GetCustomAttributes(typeof(HarmonyPatch), false).Length > 0)
-                Harmony.PatchAll(nested);
-        }
-
         // Glyph sprites once per game load — chart BeginPlay only reshuffles the map.
+        // Harmony patches come from RiftPlugin.Initialize → Harmony.PatchAll(Assembly).
         Cryptid.WarmupAtGameLoad();
 
         Logger.LogInfo($"{MyPluginInfo.PLUGIN_GUID} ready — press {ToggleKey.Entry.Value} (or Plus) for curses");
